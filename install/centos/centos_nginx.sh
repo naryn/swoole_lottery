@@ -6,7 +6,7 @@ yum install gcc gcc-c++ -y
 yum install zlib-devel pcre-devel openssl-devel -y
 
 if [ ! -f "/usr/local/src/pcre-8.38.zip" ]; then
-  http://tenet.dl.sourceforge.net/project/pcre/pcre/8.38/pcre-8.38.zip
+  wget http://tenet.dl.sourceforge.net/project/pcre/pcre/8.38/pcre-8.38.zip
 fi
 unzip pcre-8.38.zip
 cd pcre-8.38
