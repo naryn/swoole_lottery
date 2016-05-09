@@ -5,7 +5,10 @@
 #http://httpd.apache.org/download.cgi
 
 cd /usr/local/src/
-wget http://apache.fayea.com//httpd/httpd-2.4.20.tar.gz
+if [ ! -f "httpd-2.4.20.tar.gz" ]; then
+  wget http://apache.fayea.com//httpd/httpd-2.4.20.tar.gz
+fi
+
 tar -zvxf httpd-2.4.20.tar.gz
 cd httpd-2.4.20
 yum install gcc gcc-c++ -y

@@ -5,7 +5,9 @@ cd /usr/local/src/
 
 yum install zlib-devel pcre-devel openssl-devel -y
 
-wget http://nginx.org/download/nginx-1.10.0.tar.gz
+if [ ! -f "nginx-1.10.0.tar.gz" ]; then
+  wget http://nginx.org/download/nginx-1.10.0.tar.gz
+fi
 
 tar zvxf nginx-1.10.0.tar.gz && cd nginx-1.10.0
 

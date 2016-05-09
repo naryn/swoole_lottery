@@ -4,12 +4,15 @@
 groupadd mysql
 useradd -r -g mysql mysql
 
-cd /usr/local/
-wget http://cdn.mysql.com//Downloads/MySQL-5.6/mysql-5.6.30-linux-glibc2.5-x86_64.tar.gz
-tar zvxf mysql-5.6.30-linux-glibc2.5-x86_64.tar.gz
-ln -s mysql-5.6.30-linux-glibc2.5-x86_64 mysql
+cd /usr/local/src/
+if [ ! -f "mysql-5.6.30-linux-glibc2.5-x86_64.tar.gz" ]; then
+  wget http://apache.fayea.com//httpd/mysql-5.6.30-linux-glibc2.5-x86_64.tar.gz
+fi
 
-cd mysql
+tar zvxf mysql-5.6.30-linux-glibc2.5-x86_64.tar.gz
+cp -f mysql-5.6.30-linux-glibc2.5-x86_64 /usr/local/mysql
+
+cd /usr/local/mysql
 chown -R mysql .
 chgrp -R mysql .
 scripts/mysql_install_db --user=mysql
