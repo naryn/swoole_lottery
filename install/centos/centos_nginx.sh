@@ -52,7 +52,7 @@ useradd -r -g nginx nginx
 --with-http_ssl_module \
 --with-pcre=/usr/local/src/pcre-8.38 \
 --with-openssl=/usr/local/src/openssl-1.0.1t \
---with-zlib=/data/download/zlib-1.2.8
+--with-zlib=/usr/local/src/zlib-1.2.8
 
 make
 make install
