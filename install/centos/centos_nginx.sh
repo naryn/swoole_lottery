@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+yum install openssl-perl.x86_64
+
 #######pcre##########
 cd /usr/local/src/
 yum install gcc gcc-c++ -y
