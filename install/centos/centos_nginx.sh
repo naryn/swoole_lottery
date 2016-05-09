@@ -34,7 +34,7 @@ useradd -r -g nginx nginx
   --user=nginx \
   --group=nginx \
   --with-http_ssl_module \
-  --with-pcre=/usr/local/pcre-8.38/ \
+  --with-pcre=/usr/local/src/pcre-8.38/ \
   --with-zlib=/usr/lib
 
 make
