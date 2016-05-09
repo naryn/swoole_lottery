@@ -67,4 +67,5 @@ yum -y install libxml2 libxml2-devel openssl openssl-devel curl-devel libjpeg-de
 --disable-fileinfo
 
 
-make && make install
+make
+make install

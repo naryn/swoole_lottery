@@ -24,4 +24,5 @@ useradd -r -g nginx nginx
   --with-pcre=/usr/lib/ \
   --with-zlib=/usr/lib
 
-make && make install
+make
+make install

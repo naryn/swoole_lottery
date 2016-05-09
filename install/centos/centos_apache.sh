@@ -16,6 +16,6 @@ yum install zlib-devel pcre-devel openssl-devel -y
 
 ./configure --prefix=/application/apache2.4.20 --enable-deflate --enable-expires --enable-headers --enable-so --enable-modules=most --with-mpm=worker --enable-rewrite
 make
-sudo make install
+make install
 ln -s /usr/local/apache2.4.20 /usr/local/apache
 sudo /usr/local/apache/bin/httpd -k start
