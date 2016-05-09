@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-#######install nginx##########
+#######install pcre##########
 cd /usr/local/src/
 yum install gcc gcc-c++ -y
 yum install zlib-devel pcre-devel openssl-devel -y
@@ -15,7 +15,8 @@ cd pcre-8.38
 make
 make install
 
-
+#######install nginx##########
+cd /usr/local/src/
 if [ ! -f "/usr/local/src/nginx-1.10.0.tar.gz" ]; then
   wget http://nginx.org/download/nginx-1.10.0.tar.gz
 fi
