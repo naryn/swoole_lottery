@@ -11,7 +11,7 @@ fi
 rm -rf pcre-8.38
 unzip pcre-8.38.zip
 cd pcre-8.38
-./configure
+./configure --prefix=/usr/local/pcre-8.38
 
 make
 make install
