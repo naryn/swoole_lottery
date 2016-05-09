@@ -5,16 +5,16 @@ cd /usr/local/src/
 yum install gcc gcc-c++ -y
 yum install zlib-devel pcre-devel openssl-devel -y
 
-if [ ! -f "/usr/local/src/pcre-8.38.zip" ]; then
-  wget http://tenet.dl.sourceforge.net/project/pcre/pcre/8.38/pcre-8.38.zip
-fi
-rm -rf pcre-8.38
-unzip pcre-8.38.zip
-cd pcre-8.38
-./configure --prefix=/usr/local/pcre-8.38
-
-make
-make install
+#if [ ! -f "/usr/local/src/pcre-8.38.zip" ]; then
+#  wget http://tenet.dl.sourceforge.net/project/pcre/pcre/8.38/pcre-8.38.zip
+#fi
+#rm -rf pcre-8.38
+#unzip pcre-8.38.zip
+#cd pcre-8.38
+#./configure --prefix=/usr/local/pcre-8.38
+#
+#make
+#make install
 
 #######install nginx##########
 cd /usr/local/src/
@@ -34,8 +34,9 @@ useradd -r -g nginx nginx
   --user=nginx \
   --group=nginx \
   --with-http_ssl_module \
-  --with-pcre=/usr/local/src/pcre-8.38/ \
-  --with-zlib=/usr/lib
+  --with-pcre=auto/pcre/ \
+  --with-zlib=auto/lib \
+  --with-openssl=auto/openssl
 
 make
 make install
