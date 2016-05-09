@@ -1,1 +1,10 @@
-# swoole_lottery
+SwooleFramework: PHP的高级开发框架
+----
+与其他Web框架不同，SwooleFramework是一个全功能的后端服务器框架。除了Web方面的应用之外，更广泛的后端程序中都可以使用。
+
+* 内置PHP应用服务器，可脱离nginx/php-fpm/apache独立运行
+* 配置化与资源自动工厂，可实现从配置中创建资源对象，完全无需new对象
+* 全面采用命名空间+autoload，代码中无需任何的include/require
+* 全局注册树，所有资源都挂载到全局树上，彻底实现资源的单例管理和懒加载
+* 全栈框架，提供了数据库操作，模板，Cache，日志，队列，上传管理，用户管理等几乎所有的功能
+ 
