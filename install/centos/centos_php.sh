@@ -7,7 +7,7 @@ yum install gcc gcc-c++ -y
 #######新建php用户和php组
 groupadd -r php && useradd -r -g php -s /bin/false -d /usr/local/php7 -M php
 ######从GitHub下载php7安装包
-if [ ! -f "php7-src-master.zip" ]; then
+if [ ! -f "/usr/local/src/php7-src-master.zip" ]; then
   wget -c --no-check-certificate -O php7-src-master.zip https://github.com/php/php-src/archive/master.zip
 fi
 ######开始解压php7包

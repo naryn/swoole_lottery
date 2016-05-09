@@ -5,7 +5,7 @@
 #http://httpd.apache.org/download.cgi
 
 cd /usr/local/src/
-if [ ! -f "httpd-2.4.20.tar.gz" ]; then
+if [ ! -f "/usr/local/src/httpd-2.4.20.tar.gz" ]; then
   wget http://apache.fayea.com//httpd/httpd-2.4.20.tar.gz
 fi
 
