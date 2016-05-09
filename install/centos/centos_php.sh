@@ -3,7 +3,7 @@
 #######install php##########
 cd /usr/local/src/
 yum install unzip -y
-
+yum install gcc gcc-c++ -y
 #######新建php用户和php组
 groupadd -r php && useradd -r -g php -s /bin/false -d /usr/local/php7 -M php
 ######从GitHub下载php7安装包

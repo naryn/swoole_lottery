@@ -2,7 +2,7 @@
 
 #######install nginx##########
 cd /usr/local/src/
-
+yum install gcc gcc-c++ -y
 yum install zlib-devel pcre-devel openssl-devel -y
 
 if [ ! -f "nginx-1.10.0.tar.gz" ]; then
