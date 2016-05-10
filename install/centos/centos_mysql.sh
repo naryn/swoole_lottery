@@ -10,12 +10,13 @@ if [ ! -f "/usr/local/src/mysql-5.6.30.tar.gz" ]; then
 fi
 
 tar zvxf mysql-5.6.30.tar.gz
-cp -f mysql-5.6.30 /usr/local/mysql
+cp -r mysql-server-mysql-5.6.30 /usr/local/mysql
 
-cd /usr/local/mysql
+cd /usr/local/mysql/
+
 chown -R mysql .
 chgrp -R mysql .
-scripts/mysql_install_db --user=mysql
+./scripts/mysql_install_db.sh --user=mysql
 
 chown -R root .
 chown -R mysql data

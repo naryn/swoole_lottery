@@ -70,4 +70,5 @@ make
 make install
 unlink /usr/local/apache
 ln -s /usr/local/apache2.4.20 /usr/local/apache
+#httpd.conf
 #/usr/local/apache/bin/httpd -k start
