@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 
 #######install apache##########
-yum install gcc gcc-c++ -y
+yum install gcc gcc-c++ autoconf libtool -y
+
 #http://httpd.apache.org/download.cgi
 
 
@@ -16,13 +17,13 @@ tar zvxf apr-1.5.2.tar.gz
 cd apr-1.5.2
 
 ./buildconf
-CFLAGS="-fprofile-arcs -ftest-coverage" ./configure
+CFLAGS="-fprofile-arcs -ftest-coverage" ./configure --prefix=/usr/local/apr
 make
 cd test
 make
 ./testall
 cd ..
-make gcov
+make install
 
 ################apr-util#######################
 cd /usr/local/src/
@@ -32,14 +33,15 @@ fi
 rm -rf apr-util-1.5.4
 tar zvxf apr-util-1.5.4.tar.gz
 cd apr-util-1.5.4
-./buildconf
-CFLAGS="-fprofile-arcs -ftest-coverage" ./configure
+./buildconf --with-apr=../apr-1.5.2
+CFLAGS="-fprofile-arcs -ftest-coverage" ./configure --prefix=/usr/local/apr-util --with-apr=/usr/local/apr
 make
 cd test
 make
 ./testall
 cd ..
-make gcov
+make install
+
 
 
 ################apache#######################
@@ -61,8 +63,8 @@ cd httpd-2.4.20
 --enable-modules=most \
 --with-mpm=worker \
 --enable-rewrite \
---with-apr=../apr-1.5.2 \
---with-apr-util=../apr-util-1.5.4
+--with-apr=/usr/local/apr \
+--with-apr-util=/usr/local/apr-util
 
 make
 make install
