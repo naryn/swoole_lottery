@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+##x86_64
 yum install openssl-perl.x86_64
 
 #######pcre##########
