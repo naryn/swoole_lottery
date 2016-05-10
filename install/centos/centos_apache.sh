@@ -55,7 +55,7 @@ cd httpd-2.4.20
 
 
 ./configure \
---prefix=/application/apache2.4.20 \
+--prefix=/usr/local/apache2.4.20 \
 --enable-deflate \
 --enable-expires \
 --enable-headers \
@@ -70,4 +70,4 @@ make
 make install
 unlink /usr/local/apache
 ln -s /usr/local/apache2.4.20 /usr/local/apache
-sudo /usr/local/apache/bin/httpd -k start
+#/usr/local/apache/bin/httpd -k start
