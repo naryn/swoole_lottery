@@ -5,12 +5,12 @@ groupadd mysql
 useradd -r -g mysql mysql
 
 cd /usr/local/src/
-if [ ! -f "/usr/local/src/mysql-5.6.30-linux-glibc2.5-x86_64.tar.gz" ]; then
-  wget http://apache.fayea.com//httpd/mysql-5.6.30-linux-glibc2.5-x86_64.tar.gz
+if [ ! -f "/usr/local/src/mysql-5.6.30.tar.gz" ]; then
+  wget https://github.com/mysql/mysql-server/archive/mysql-5.6.30.tar.gz
 fi
 
-tar zvxf mysql-5.6.30-linux-glibc2.5-x86_64.tar.gz
-cp -f mysql-5.6.30-linux-glibc2.5-x86_64 /usr/local/mysql
+tar zvxf mysql-5.6.30.tar.gz
+cp -f mysql-5.6.30 /usr/local/mysql
 
 cd /usr/local/mysql
 chown -R mysql .
