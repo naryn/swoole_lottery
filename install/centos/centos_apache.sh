@@ -4,6 +4,8 @@
 yum install gcc gcc-c++ -y
 #http://httpd.apache.org/download.cgi
 
+
+################apr#######################
 cd /usr/local/src/
 
 if [ ! -f "/usr/local/src/apr-1.5.2.tar.gz" ]; then
@@ -12,10 +14,17 @@ fi
 rm -rf apr-1.5.2
 tar zvxf apr-1.5.2.tar.gz
 cd apr-1.5.2
-./configure --prefix=/usr/local/apr
-make
-make install
 
+./buildconf
+CFLAGS="-fprofile-arcs -ftest-coverage" ./configure
+make
+cd test
+make
+./testall
+cd ..
+make gcov
+
+################apr-util#######################
 cd /usr/local/src/
 if [ ! -f "/usr/local/src/apr-util-1.5.4.tar.gz" ]; then
   wget -O apr-util-1.5.4.tar.gz https://github.com/apache/apr-util/archive/1.5.4.tar.gz
@@ -23,10 +32,17 @@ fi
 rm -rf apr-util-1.5.4
 tar zvxf apr-util-1.5.4.tar.gz
 cd apr-util-1.5.4
-./configure --prefix=/usr/local/apr-util
+./buildconf
+CFLAGS="-fprofile-arcs -ftest-coverage" ./configure
 make
-make install
+cd test
+make
+./testall
+cd ..
+make gcov
 
+
+################apache#######################
 cd /usr/local/src/
 if [ ! -f "/usr/local/src/httpd-2.4.20.tar.gz" ]; then
   wget http://apache.fayea.com//httpd/httpd-2.4.20.tar.gz
@@ -45,8 +61,8 @@ cd httpd-2.4.20
 --enable-modules=most \
 --with-mpm=worker \
 --enable-rewrite \
---with-apr=/usr/local/apr \
---with-apr-util=/usr/local/apr-util/
+--with-apr=../apr-1.5.2 \
+--with-apr-util=../apr-util-1.5.4
 
 make
 make install
