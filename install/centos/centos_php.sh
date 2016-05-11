@@ -21,7 +21,7 @@ cd php-src-php-7.0.6
 yum -y install libxml2 libxml2-devel openssl openssl-devel curl-devel libjpeg-devel libpng-devel freetype-devel libmcrypt-devel
 
 
-./configure
+./configure \
 --prefix=/usr/local/php7 \
 --exec-prefix=/usr/local/php7 \
 --bindir=/usr/local/php7/bin \
@@ -30,7 +30,7 @@ yum -y install libxml2 libxml2-devel openssl openssl-devel curl-devel libjpeg-de
 --libdir=/usr/local/php7/lib/php \
 --mandir=/usr/local/php7/php/man \
 --with-config-file-path=/usr/local/php7/etc \
---with-apxs2=/usr/local/apache/bin/apxs\
+--with-apxs2=/usr/local/apache/bin/apxs \
 --with-mysql-sock=/var/run/mysql/mysql.sock \
 --with-mcrypt=/usr/include \
 --with-mhash \

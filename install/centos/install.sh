@@ -11,5 +11,11 @@
 #####3 install mysql
 ./centos_mysql.sh
 
-#####3 install php
+#####4 install php
+./centos_memcached.sh
+
+#####5 install php
+./centos_redis.sh
+
+#####6 install php
 ./centos_php.sh
