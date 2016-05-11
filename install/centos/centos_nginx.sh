@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 ##x86_64
-yum install openssl-perl.x86_64
+yum install openssl-perl.x86_64 -y
 
 #######pcre##########
 cd /usr/local/src/
