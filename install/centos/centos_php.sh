@@ -2,7 +2,7 @@
 
 
 
-yum install gcc gcc-c++ automake -y
+yum install gcc gcc-c++ automake unzip -y
 
 #######新建php用户和php组
 groupadd -r php
@@ -30,13 +30,14 @@ yum -y install libxml2 libxml2-devel openssl openssl-devel curl-devel libjpeg-de
 --libdir=/usr/local/php7/lib/php \
 --mandir=/usr/local/php7/php/man \
 --with-config-file-path=/usr/local/php7/etc \
+--with-apxs2=/usr/local/apache/bin/apxs\
 --with-mysql-sock=/var/run/mysql/mysql.sock \
 --with-mcrypt=/usr/include \
 --with-mhash \
 --with-openssl \
---with-mysql=shared,mysqlnd \
---with-mysqli=shared,mysqlnd \
---with-pdo-mysql=shared,mysqlnd \
+--with-mysql=mysqlnd \
+--with-mysqli=mysqlnd \
+--with-pdo-mysql=mysqlnd \
 --with-gd \
 --with-iconv \
 --with-zlib \
@@ -72,5 +73,60 @@ yum -y install libxml2 libxml2-devel openssl openssl-devel curl-devel libjpeg-de
 --disable-fileinfo
 
 
+make ZEND_EXTRA_LIBS='-liconv'
+
+make install
+
+cp php.ini-production /usr/local/php7/etc/php.ini
+
+cd ..
+
+
+###############php redis extension###############
+cd /usr/local/src/
+
+if [ ! -f "/usr/local/src/phpredis-2.2.7.tar.gz" ]; then
+    wget -c -O phpredis-2.2.7.tar.gz https://github.com/phpredis/phpredis/archive/2.2.7.tar.gz
+fi
+tar zxvf phpredis-2.2.7.tar.gz
+
+cd phpredis-2.2.7
+/usr/local/php7/bin/phpize
+./configure --with-php-config=/usr/local/php7/bin/php-config
 make
 make install
+cd ..
+
+###############php swoole extension###############
+cd /usr/local/src/
+
+if [ ! -f "/usr/local/src/swoole-1.8.4-stable.tar.gz" ]; then
+    wget -c https://github.com/swoole/swoole-src/archive/swoole-1.8.4-stable.tar.gz
+fi
+
+tar zxvf swoole-1.8.4-stable.tar.gz
+cd swoole-src-swoole-1.8.4-stable/
+/usr/local/php7/bin/phpize
+./configure --with-php-config=/usr/local/php7/bin/php-config
+make
+make install
+cd ..
+
+
+
+###############php-memcached extension###############
+cd /usr/local/src/
+
+if [ ! -f "/usr/local/src/php-memcached-2.2.0.tar.gz" ]; then
+    wget -c -O php-memcached-2.2.0.tar.gz https://github.com/php-memcached-dev/php-memcached/archive/2.2.0.tar.gz
+fi
+
+tar zvxf php-memcached-2.2.0.tar.gz
+
+cd php-memcached-2.2.0
+/usr/local/php7/bin/phpize
+./configure --with-php-config=/usr/local/php7/bin/php-config
+
+make
+make install
+cd ..
