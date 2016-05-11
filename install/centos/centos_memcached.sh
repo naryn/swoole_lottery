@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-yum install autoconf -y
+yum install autoconf automake -y
 
 cd /usr/local/src/
 if [ ! -f "/usr/local/src/memcached-1.4.25.tar.gz" ]; then

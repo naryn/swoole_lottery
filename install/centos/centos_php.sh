@@ -1,17 +1,22 @@
 #!/usr/bin/env bash
 
-#######install php##########
-cd /usr/local/src/
-yum install unzip -y
-yum install gcc gcc-c++ -y
+
+
+yum install gcc gcc-c++ automake -y
+
 #######新建php用户和php组
-groupadd -r php && useradd -r -g php -s /bin/false -d /usr/local/php7 -M php
-######从GitHub下载php7安装包
-if [ ! -f "/usr/local/src/php7-src-master.zip" ]; then
-  wget -c --no-check-certificate -O php7-src-master.zip https://github.com/php/php-src/archive/master.zip
+groupadd -r php
+useradd -r -g php -s /bin/false -d /usr/local/php7 -M php
+
+######从GitHub下载php7安装包 install#################
+cd /usr/local/src/
+
+if [ ! -f "/usr/local/src/php-7.0.6.tar.gz" ]; then
+  wget https://github.com/php/php-src/archive/php-7.0.6.tar.gz
 fi
-######开始解压php7包
-unzip -q php7-src-master.zip && cd php-src-master
+
+tar zxvf php-7.0.6.tar.gz
+cd php-src-php-7.0.6
 #####安装编译php7时需要的依赖包
 yum -y install libxml2 libxml2-devel openssl openssl-devel curl-devel libjpeg-devel libpng-devel freetype-devel libmcrypt-devel
 
