@@ -15,4 +15,10 @@ chmod +x /web/swoole_lottery/install/centos/*
 cd /web/swoole_lottery/install/centos/
 
 
-#docker run -itd -p 9876:80 192.168.62.187:5000/centos:6 /bin/bash
+#docker run -itd -p 9876:80  192.168.62.187:5000/centos:6 /bin/bash
+
+#vi /var/lib/boot2docker/profile
+
+
+#ubuntu
+#/etc/default/docker
