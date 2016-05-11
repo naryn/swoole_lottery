@@ -25,6 +25,7 @@ tar zxvf memcached-1.4.25.tar.gz
 cd memcached-1.4.25
 ./configure --prefix=/usr/local/memcached --with-libevent=/usr/local/libevent
 make
+make test
 make install
 
-#/usr/local/memcached/bin/memcached -d -m 2048 -p 11211 -u root
+/usr/local/memcached/bin/memcached -d -m 100 -p 11211 -u root
