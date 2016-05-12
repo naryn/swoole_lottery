@@ -29,3 +29,4 @@ make test
 make install
 
 /usr/local/memcached/bin/memcached -d -m 100 -p 11211 -u root
+

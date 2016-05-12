@@ -25,7 +25,7 @@ cd ../
 
 cd php-5.6.16
 
-./configure --prefix=/usr/local/php5 --with-config-file-path=/usr/local/php --enable-mbstring --enable-ftp --enable-mysqlnd --with-freetype-dir=/usr --enable-gd-native-ttf --with-libxml-dir=/usr --with-xmlrpc --enable-xml --enable-sockets --with-gd --with-zlib --with-iconv --enable-zip --with-freetype-dir=/usr/lib/ --enable-soap --enable-pcntl --enable-cli --with-curl=/usr/local/curl --with-apxs2=/usr/local/apache/bin/apxs --with-jpeg-dir=/usr/local/jpeg
+./configure --prefix=/usr/local/php5 --with-config-file-path=/usr/local/php5/etc/ --enable-mbstring --enable-ftp --enable-mysqlnd --with-freetype-dir=/usr --enable-gd-native-ttf --with-libxml-dir=/usr --with-xmlrpc --enable-xml --enable-sockets --with-gd --with-zlib --with-iconv --enable-zip --with-freetype-dir=/usr/lib/ --enable-soap --enable-pcntl --enable-cli --with-curl=/usr/local/curl --with-apxs2=/usr/local/apache/bin/apxs --with-jpeg-dir=/usr/local/jpeg
 
 make
 make install
@@ -33,6 +33,7 @@ cd ../
 
 unlink /usr/local/php
 ln -s /usr/local/php5 /usr/local/php
+
 
 ###############php redis extension###############
 cd /usr/local/src/
@@ -61,18 +62,28 @@ fi
 tar zxvf swoole-1.8.4-stable.tar.gz
 cd swoole-src-swoole-1.8.4-stable/
 /usr/local/php/bin/phpize
-./configure --with-php-config=/usr/local/php/bin/php-config
+./configure --with-php-config=/usr/local/php/bin/php-config --with-libmemcached-dir=/usr/local/memcached/
 make
 make install
 sed -i '852 a extension=swoole.so' /usr/local/php/etc/php.ini
 
 cd ..
 
-
-
 ###############php-memcached extension###############
 cd /usr/local/src/
 
+if [ ! -f "/usr/local/src/libmemcached-1.0.18.tar.gz" ]; then
+    wget https://launchpad.net/libmemcached/1.0/1.0.18/+download/libmemcached-1.0.18.tar.gz
+fi
+tar libmemcached-1.0.18.tar.gz
+
+cd libmemcached-1.0.18
+./configure --prefix=/usr/local/libmemcached
+make
+make install
+
+
+cd /usr/local/src/
 if [ ! -f "/usr/local/src/php-memcached-2.2.0.tar.gz" ]; then
     wget -c -O php-memcached-2.2.0.tar.gz https://github.com/php-memcached-dev/php-memcached/archive/2.2.0.tar.gz
 fi
@@ -81,10 +92,13 @@ tar zvxf php-memcached-2.2.0.tar.gz
 
 cd php-memcached-2.2.0
 /usr/local/php/bin/phpize
-./configure --with-php-config=/usr/local/php/bin/php-config
+./configure --with-php-config=/usr/local/php/bin/php-config --with-libmemcached-dir=/usr/local/libmemcached/
 
 make
 make install
 sed -i '852 a extension=memcached.so' /usr/local/php/etc/php.ini
 
 cd ..
+
+#*在LoadModule处添加 LoadModule php5_module module/libphp5.so
+#*在AddTypeapplication处添加 AddType application/x-httpd-php .php

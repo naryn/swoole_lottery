@@ -72,3 +72,16 @@ unlink /usr/local/apache
 ln -s /usr/local/apache2.4.20 /usr/local/apache
 #httpd.conf
 #/usr/local/apache/bin/httpd -k start
+
+
+#<IfModule mod_php7.c>
+#  php_value include_path ".:/usr/local/lib/php"
+#  php_admin_flag engine on
+#</IfModule>
+
+#LoadModule php7_module modules/libphp7.so
+
+
+#<FilesMatch "\.ph(p[2-7]?|tml)$">
+#    SetHandler application/x-httpd-php
+#</FilesMatch>

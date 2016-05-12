@@ -124,6 +124,18 @@ cd ..
 ###############php-memcached extension###############
 cd /usr/local/src/
 
+
+if [ ! -f "/usr/local/src/libmemcached-1.0.18.tar.gz" ]; then
+    wget https://launchpad.net/libmemcached/1.0/1.0.18/+download/libmemcached-1.0.18.tar.gz
+fi
+tar libmemcached-1.0.18.tar.gz
+
+cd libmemcached-1.0.18
+./configure --prefix=/usr/local/libmemcached
+make
+make install
+
+cd /usr/local/src/
 if [ ! -f "/usr/local/src/php-memcached-2.2.0.tar.gz" ]; then
     wget -c -O php-memcached-2.2.0.tar.gz https://github.com/php-memcached-dev/php-memcached/archive/2.2.0.tar.gz
 fi
