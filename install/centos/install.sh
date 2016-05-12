@@ -18,4 +18,4 @@
 ./centos_redis.sh
 
 #####6 install php
-./centos_php.sh
+./centos_php5.sh
