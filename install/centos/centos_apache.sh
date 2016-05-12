@@ -47,7 +47,7 @@ make install
 ################apache#######################
 cd /usr/local/src/
 if [ ! -f "/usr/local/src/httpd-2.4.20.tar.gz" ]; then
-  wget http://apache.fayea.com//httpd/httpd-2.4.20.tar.gz
+  wget http://apache.fayea.com/httpd/httpd-2.4.20.tar.gz
 fi
 rm -rf httpd-2.4.20
 tar -zvxf httpd-2.4.20.tar.gz
