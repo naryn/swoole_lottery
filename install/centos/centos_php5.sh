@@ -62,7 +62,12 @@ fi
 tar zxvf swoole-1.8.4-stable.tar.gz
 cd swoole-src-swoole-1.8.4-stable/
 /usr/local/php/bin/phpize
-./configure --with-php-config=/usr/local/php/bin/php-config --with-libmemcached-dir=/usr/local/memcached/
+./configure --with-php-config=/usr/local/php/bin/php-config \
+--with-libmemcached-dir=/usr/local/memcached/ \
+--enable-async-mysql \
+--enable-async-redis \
+--enable-async-httpclient
+
 make
 make install
 sed -i '852 a extension=swoole.so' /usr/local/php/etc/php.ini
