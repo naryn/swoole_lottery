@@ -30,6 +30,8 @@ cd php-5.6.16
 --enable-mbstring \
 --enable-ftp \
 --enable-mysqlnd \
+--with-pdo-mysql=/usr/local/mysql \
+--with-mysql=/usr/local/mysql \
 --with-freetype-dir=/usr \
 --enable-gd-native-ttf \
 --with-libxml-dir=/usr \

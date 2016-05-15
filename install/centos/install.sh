@@ -3,7 +3,7 @@
 
 #####1 install apache
 
-./centos_apache.sh
+#./centos_apache.sh
 
 #####2 install nginx
 ./centos_nginx.sh
