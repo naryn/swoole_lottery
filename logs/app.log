@@ -1,4 +1,0 @@
-[2016-05-03 19:45:28]	ERROR	Swoole\Redis [7902] Swoole Redis[127.0.0.1:6379]
-                 Exception(Msg=Redis server went away, Code=0), Redis->keys, Params=array (
-  0 => '*',
-)

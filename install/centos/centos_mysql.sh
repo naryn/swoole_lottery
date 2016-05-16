@@ -8,7 +8,7 @@ useradd -r -g mysql mysql
 yum install cmake bison-devel ncurses-devel  bison.x86_64  bison-devel.x86_64 -y
 cd /usr/local/src/
 if [ ! -f "/usr/local/src/mysql-5.6.30.tar.gz" ]; then
-  wget https://github.com/mysql/mysql-server/archive/mysql-5.6.30.tar.gz
+  wget -c https://github.com/mysql/mysql-server/archive/mysql-5.6.30.tar.gz
 fi
 
 tar zvxf mysql-5.6.30.tar.gz

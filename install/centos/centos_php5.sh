@@ -6,13 +6,13 @@ yum install gcc bison bison-devel zlib-devel libmcrypt-devel mcrypt mhash-devel 
 cd /usr/local/src/
 
 if [ ! -f "php-5.6.16.tar.gz" ]; then
-  wget http://cn2.php.net/distributions/php-5.6.16.tar.gz
+  wget -c http://cn2.php.net/distributions/php-5.6.16.tar.gz
 fi
 tar zxf php-5.6.16.tar.gz
 
 
 if [ ! -f "jpegsrc.v9a.tar.gz" ]; then
-  wget http://www.ijg.org/files/jpegsrc.v9a.tar.gz
+  wget -c http://www.ijg.org/files/jpegsrc.v9a.tar.gz
 fi
 
 tar zxf jpegsrc.v9a.tar.gz
@@ -53,13 +53,15 @@ cd php-5.6.16
 
 make
 make install
-
+cp /usr/local/src/php-5.6.16/php.ini-production /usr/local/php/etc/php.ini
 cd ../
 
 unlink /usr/local/php
 ln -s /usr/local/php5 /usr/local/php
 
-
+#No package libmcrypt-devel available.
+#No package mcrypt available.
+#No package mhash-devel available.
 ###############php redis extension###############
 cd /usr/local/src/
 
@@ -102,7 +104,7 @@ cd ..
 cd /usr/local/src/
 
 if [ ! -f "/usr/local/src/libmemcached-1.0.18.tar.gz" ]; then
-    wget https://launchpad.net/libmemcached/1.0/1.0.18/+download/libmemcached-1.0.18.tar.gz
+    wget -c https://launchpad.net/libmemcached/1.0/1.0.18/+download/libmemcached-1.0.18.tar.gz
 fi
 tar libmemcached-1.0.18.tar.gz
 

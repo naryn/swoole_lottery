@@ -4,7 +4,7 @@ yum install autoconf automake -y
 
 cd /usr/local/src/
 if [ ! -f "/usr/local/src/memcached-1.4.25.tar.gz" ]; then
-  wget -O libevent-2.0.20-stable.tar.gz https://github.com/downloads/libevent/libevent/libevent-2.0.20-stable.tar.gz
+  wget -c -O libevent-2.0.20-stable.tar.gz https://github.com/downloads/libevent/libevent/libevent-2.0.20-stable.tar.gz
 fi
 
 tar zxvf libevent-2.0.20-stable.tar.gz

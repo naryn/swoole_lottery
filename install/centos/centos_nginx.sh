@@ -23,7 +23,7 @@ tar zvxf zlib-1.2.8.tar.gz
 
 #########openssl##########
 if [ ! -f "/usr/local/src/openssl-1.0.1t.tar.gz" ]; then
-  wget http://www.openssl.org/source/openssl-1.0.1t.tar.gz
+  wget -c http://www.openssl.org/source/openssl-1.0.1t.tar.gz
 fi
 rm -rf openssl-1.0.1t
 tar zvxf openssl-1.0.1t.tar.gz
