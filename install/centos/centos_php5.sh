@@ -30,8 +30,9 @@ cd php-5.6.16
 --enable-mbstring \
 --enable-ftp \
 --enable-mysqlnd \
---with-pdo-mysql=/usr/local/mysql \
---with-mysql=/usr/local/mysql \
+--with-pdo-mysql=mysqlnd \
+--with-mysql=mysqlnd \
+--with-mysqli=mysqlnd \
 --with-freetype-dir=/usr \
 --enable-gd-native-ttf \
 --with-libxml-dir=/usr \
@@ -48,8 +49,8 @@ cd php-5.6.16
 --enable-cli \
 --with-curl=/usr/local/curl \
 --with-apxs2=/usr/local/apache/bin/apxs \
---with-jpeg-dir=/usr/local/jpeg
---enable-mysqlnd \
+--with-jpeg-dir=/usr/local/jpeg \
+--enable-mysqlnd
 
 make
 make install
