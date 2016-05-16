@@ -35,8 +35,16 @@
 
 
 接口地址
----
-1.
+----
+获取卡片
+1.http://127.0.0.1/card/get?uid=123456
+
+查询我的卡片
+2.http://127.0.0.1/card/select?uid=123456
+
+查询发放情况
+3.http://127.0.0.1/card/result
+
 
 
 upstream appServer{
