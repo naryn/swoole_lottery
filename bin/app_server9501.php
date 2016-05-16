@@ -16,5 +16,5 @@ Swoole\Network\Server::start(function ()
     $server->setDocumentRoot(WEBPATH);
     $server->setLogger(new \Swoole\Log\EchoLog(__DIR__ . "/webserver9501.log")); //Logger
     $server->daemonize();                                                  //作为守护进程
-    $server->run(array('worker_num' => 2, 'max_request' => 5000, 'log_file' => '/tmp/swoole.log'));
+    $server->run(array('worker_num' => 2, 'max_request' => 5000, 'log_file' => '/tmp/swoole9501.log'));
 });

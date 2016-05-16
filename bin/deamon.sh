@@ -6,7 +6,10 @@ checkHttpd=`pgrep httpd`
 checkNginx=`pgrep nginx`
 checkRedis=`pgrep redis`
 checkMysql=`pgrep mysql`
-checkAppServer=`pgrep app_server9501`
+checkMemcached=`pgrep mecached`
+checkAppServer1=`ps -fe |grep "app_server9501.php" |grep -v "grep" | grep "master" | wc -l`
+checkAppServer2=`ps -fe |grep "app_server9502.php" |grep -v "grep" | grep "master" | wc -l`
+
 
 while :
 do
@@ -43,11 +46,27 @@ do
                 #send mail
         fi
 
-        if [ -n "$checkAppServer" ]; then
-                echo 'checkAppServer normal' >/dev/null 2>&1
+        if [ -n "$checkMemcached" ]; then
+                echo 'Memcached normal' >/dev/null 2>&1
         else
-                /usr/local/apache/bin/apachectl start
-                echo 'checked error: AppServer at ' $date >> /root/server_error.log
+                /usr/local/memcached/bin/memcached -d -m 60 -p 11211 -u root&
+                echo 'checked error: memcached at ' $date >> /root/server_error.log
+                #send mail
+        fi
+
+        if [ -n "$checkAppServer1" ]; then
+                echo 'checkAppServer1 normal' >/dev/null 2>&1
+        else
+                /usr/local/php/bin/php /web/swoole_lottery/bin/app_server9501.php start
+                echo 'checked error: AppServer1 at ' $date >> /root/server_error.log
+                #send mail
+        fi
+
+        if [ -n "$checkAppServer2" ]; then
+                echo 'checkAppServer2 normal' >/dev/null 2>&1
+        else
+                /usr/local/php/bin/php /web/swoole_lottery/bin/app_server9502.php start
+                echo 'checked error: AppServer2 at ' $date >> /root/server_error.log
                 #send mail
         fi
 
