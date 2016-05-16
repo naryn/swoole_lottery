@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+#/usr/local/bin/start.sh
+
 #start mysql
 /usr/local/mysql/bin/mysqld_safe --defaults-file=/usr/local/mysql/my.cnf&
 
