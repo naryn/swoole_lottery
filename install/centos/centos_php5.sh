@@ -75,7 +75,7 @@ cd phpredis-2.2.7
 ./configure --with-php-config=/usr/local/php/bin/php-config
 make
 make install
-sed -i '852 a extension=redis.so' /usr/local/php/etc/php.ini
+sed -i '863 a extension=redis.so' /usr/local/php/etc/php.ini
 cd ..
 
 
@@ -96,7 +96,7 @@ cd swoole-src-swoole-1.8.4-stable/
 
 make
 make install
-sed -i '852 a extension=swoole.so' /usr/local/php/etc/php.ini
+sed -i '863 a extension=swoole.so' /usr/local/php/etc/php.ini
 
 cd ..
 
@@ -127,7 +127,7 @@ cd php-memcached-2.2.0
 
 make
 make install
-sed -i '852 a extension=memcached.so' /usr/local/php/etc/php.ini
+sed -i '863 a extension=memcached.so' /usr/local/php/etc/php.ini
 
 cd ..
 
