@@ -46,8 +46,17 @@
 3.http://127.0.0.1/card/result
 
 
+服务守护
+----
+/web/swoole_lottery/bin/deamon.sh
 
+
+负载分发
+---
 upstream appServer{
     server 127.0.0.1:9501;
     server 127.0.0.1:9502;
 }
+
+DB主从（未配）...
+---

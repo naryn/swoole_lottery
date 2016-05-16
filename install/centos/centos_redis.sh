@@ -16,6 +16,6 @@ make PREFIX=/usr/local/redis-3.2.0 install
 
 cp redis.conf /usr/local/redis-3.2.0/redis.conf
 
-ln -s /usr/local/redis-3.2.0 /usr/local/redis
+ln -s /usr/local/redis-3.2.0 /usr/local/redis/
 
 /usr/local/redis-3.2.0/bin/redis-server /usr/local/redis-3.2.0/redis.conf&

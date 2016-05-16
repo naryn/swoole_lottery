@@ -6,7 +6,7 @@ checkHttpd=`pgrep httpd`
 checkNginx=`pgrep nginx`
 checkRedis=`pgrep redis`
 checkMysql=`pgrep mysql`
-checkMemcached=`pgrep mecached`
+checkMemcached=`pgrep memcached`
 checkAppServer1=`ps -fe |grep "app_server9501.php" |grep -v "grep" | grep "master" | wc -l`
 checkAppServer2=`ps -fe |grep "app_server9502.php" |grep -v "grep" | grep "master" | wc -l`
 
@@ -49,7 +49,7 @@ do
         if [ -n "$checkMemcached" ]; then
                 echo 'Memcached normal' >/dev/null 2>&1
         else
-                /usr/local/memcached/bin/memcached -d -m 60 -p 11211 -u root&
+                /usr/local/memcached/bin/memcached -d -m 60 -p 11211 -u root
                 echo 'checked error: memcached at ' $date >> /root/server_error.log
                 #send mail
         fi
