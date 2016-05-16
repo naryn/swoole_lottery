@@ -16,8 +16,8 @@ class card extends Swoole\Controller
     protected $_iplimit = TRUE;//ip 限制
     protected $_uidlimit = TRUE;//UID 限制
 
-    protected $__huodongPV = 40000000;//估计平时2倍
-    protected $__huodongUV = 2000000;//估计平时2倍
+    protected $__huodongPV = 20000000;
+    protected $__huodongUV = 2000000;
 
     protected $uid;
     protected $dayNum = 0;
