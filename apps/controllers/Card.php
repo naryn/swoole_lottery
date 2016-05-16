@@ -12,8 +12,12 @@ use Swoole;
 
 class card extends Swoole\Controller
 {
+    protected $_asyncMysql = TRUE;//异步mysql 入库
+    protected $_iplimit = TRUE;//ip 限制
+    protected $_uidlimit = TRUE;//UID 限制
+
     protected $__huodongPV = 40000000;//估计平时2倍
-    protected $__huodongUV = 4000000;//估计平时2倍
+    protected $__huodongUV = 2000000;//估计平时2倍
 
     protected $uid;
     protected $dayNum = 0;
@@ -23,83 +27,78 @@ class card extends Swoole\Controller
 
     protected $mcDateCard = 'mc_date_c';//mc 每天
 
-    protected $card = [
-        'a', 'b', 'c', 'd', 'e'
-    ];
-
     protected $hdConfig = [
-        'start' => 1462723200,//'20160509',
-        'end' => 1463501800,//'20160518',
-        'ip_limit' => 30,
-        'ip_limit_time' => 60,//60秒20次;30=3uid
-        'uid_limit' => 2,
+        'start'          => 1462723200,//'20160509',
+        'end'            => 1463501800,//'20160518',
+        'ip_limit'       => 30,
+        'ip_limit_time'  => 60,//60秒20次;30=3uid
+        'uid_limit'      => 2,
         'uid_limit_time' => 12,//12秒2次
     ];
 
     protected $cardConfig = [
         'a' => [
-            'total' => 10000,
-            'day' => [500, 500, 500, 500, 500, 500, 500, 500, 500, 5500],
+            'total'   => 10000,
+            'day'     => [500, 500, 500, 500, 500, 500, 500, 500, 500, 5500],
             'allSell' => 10//第10天,发放所有
         ],
         'b' => [
             'total' => 1000000,
-            'avg' => 100000
+            'avg'   => 100000
         ],
         'c' => [
             'total' => 1000000,
-            'avg' => 100000
+            'avg'   => 100000
         ],
         'd' => [
             'total' => 1000000,
-            'avg' => 100000
+            'avg'   => 100000
         ],
         'e' => [
             'total' => 1000000,
-            'avg' => 100000
+            'avg'   => 100000
         ]
     ];
 
-
+    /**
+     * 获取卡片
+     * @return string
+     */
     public function get()
     {
         $this->http->header('Content-Type', 'text/html; charset=UTF-8');
         $this->uid = isset($this->swoole->request->get['uid']) ? intval($this->swoole->request->get['uid']) : 0;
 
         $now = time();
-        if ($now < $this->hdConfig['start'] || $now > $this->hdConfig['end']) {
+        if($now < $this->hdConfig['start'] || $now > $this->hdConfig['end']){
             return $this->json([], 101, '活动已经结束');
         }
 
-        if ($this->uid <= 0) {
+        if($this->uid <= 0){
             return $this->json([], 101, 'uid == 0');
         }
 
         //uid 频率限制 直接返回没中奖
-        if ($this->restrictionRules($this->uid, $this->hdConfig['uid_limit'], $this->hdConfig['uid_limit_time'])) {
-            return $this->json([], 100, '');
+        if($this->_uidlimit && $this->restrictionRules($this->uid, $this->hdConfig['uid_limit'], $this->hdConfig['uid_limit_time'])){
+            return $this->json([], 100, '没中奖~');
         }
 
         //ip 频率限制 直接返回没中奖
         $ip = Swoole\Tool::getIp();
-        if ($this->restrictionRules($ip, $this->hdConfig['ip_limit'], $this->hdConfig['ip_limit_time'])) {
-            return $this->json([], 100, '');
+        if($this->_iplimit && $this->restrictionRules($ip, $this->hdConfig['ip_limit'], $this->hdConfig['ip_limit_time'])){
+            return $this->json([], 100, '没中奖~');
         }
 
-        /**
-         * 有可能得到卡片概率
-         */
+        //有可能得到卡片概率
         $cardType = $this->__lottery();
-        if (!$cardType) {
+        if(!$cardType){
             return $this->json([], 100, '没中奖');
         }
 
-        /**
-         * 库存判断
-         */
+        //库存判断
         $surplus = $this->_getCard($cardType);
-        if (!$surplus) {
-            return $this->json([], 100, '没中奖');
+        if(!$surplus){
+            return $this->json([], 100, '没中奖!');
         }
 
         return $this->json(['card' => $cardType], 100, '你获得了一张' . $cardType);
@@ -113,24 +112,25 @@ class card extends Swoole\Controller
         $this->dayNum = intval((time() - $this->hdConfig['start']) / 86400);
 
         $totalNum = 0;
-        foreach ($this->cardConfig as $card) {
+        foreach($this->cardConfig as $card){
             $tmp = isset($card['day']) ? $card['day'][$this->dayNum] : $card['avg'];
             $totalNum += $tmp;
         }
         $mtRand = mt_rand(0, $this->__huodongPV);
-        if ($mtRand >= $totalNum) {
-            return false;
+        if($mtRand >= $totalNum){
+            return FALSE;
         }
 
         $tmp = 0;
         $mtRand = mt_rand(1, $totalNum);
-        foreach ($this->cardConfig as $type => $card) {
-            $tmp = $card['total'] + $tmp;
-            if ($mtRand <= $tmp) {
+        foreach($this->cardConfig as $type => $card){
+            $cardNum = isset($card['day']) ? $card['day'][$this->dayNum] : $card['avg'];
+            $tmp = $cardNum + $tmp;
+            if($mtRand <= $tmp){
                 return $type;
             }
         }
-        return false;
+        return FALSE;
     }
 
 
@@ -141,39 +141,60 @@ class card extends Swoole\Controller
      */
     private function _getCard($card)
     {
-        if (!isset($this->cardConfig[$card])) {
+        if(!isset($this->cardConfig[$card])){
             return FALSE;
         }
 
-        if (isset($this->cardConfig[$card]['day'])) {
+        if(isset($this->cardConfig[$card]['day'])){
             $num = $this->cardConfig[$card]['day'];
-        } else {
+        } else{
             $num = $this->cardConfig[$card]['avg'];
         }
 
         //第N天允许发完剩余
-        if (isset($this->cardConfig[$card]['allSell']) && $this->dayNum == $this->cardConfig[$card]['allSell']) {
+        if(isset($this->cardConfig[$card]['allSell']) && $this->dayNum == $this->cardConfig[$card]['allSell']){
             $cardSold = $this->redis->incr($this->cardTypeSold . $card);
-            if ($this->cardConfig[$card]['total'] >= $cardSold) {
-                $this->_aSynSave($this->uid, $card);
-                //todo
-                //$this->clsMemcached()-incr($this->mcDateCard .date('m-d'). $card);
-                return true;
-            } else {
-                return false;
+            if($this->cardConfig[$card]['total'] >= $cardSold){
+                return $this->__update($card, $cardSold);
+            } else{
+                return FALSE;
             }
         }
 
         //今天是否超额.
         $todayCardSold = $this->redis->incr($this->dateCardTypeSold . $card);
-        if ($num >= $todayCardSold) {
-            $this->redis->incr($this->cardTypeSold . $card);
-            //todo
-            //$this->clsMemcached()-incr($this->mcDateCard .date('m-d'). $card);
-            $this->_aSynSave($this->uid, $card);
-            return true;
+        if($num >= $todayCardSold){
+            $cardSold = $this->redis->incr($this->cardTypeSold . $card);
+            return $this->__update($card, $cardSold);
         }
-        return false;
+        return FALSE;
+    }
+
+    private function __update($card, $cardSold)
+    {
+        if($this->_asyncMysql){
+            $this->_aSynSave($this->uid, $card);
+            $this->clsMemcached->set($this->mcDateCard . date('m-d') . $card, $cardSold);
+            return TRUE;
+        } else{
+            $cid = $this->_log($this->uid, $card);
+            if($cid){
+                $this->clsMemcached->set($this->mcDateCard . date('m-d') . $card, $cardSold);
+                return TRUE;
+            }
+        }
+        return FALSE;
+    }
+
+    private function _log($uid, $card)
+    {
+        static $cardLog;
+        if(!$cardLog){
+            $cardLog = Model('card_log');
+        }
+        $cardIndex = array_flip(array_keys($this->cardConfig));
+        $id = $cardLog->put(array('uid' => intval($uid), 'card' => $cardIndex[$card], 'dateline' => 13));
+        return $id;
     }
 
     /**
@@ -185,17 +206,19 @@ class card extends Swoole\Controller
     {
         static $pool;
         $dateline = time();
-        if (!$pool) {
+        if(!$pool){
             $config = array(
-                'host' => $this->config['db']['master']['host'],
-                'user' => $this->config['db']['master']['user'],
+                'host'     => $this->config['db']['master']['host'],
+                'user'     => $this->config['db']['master']['user'],
                 'password' => $this->config['db']['master']['passwd'],
                 'database' => $this->config['db']['master']['name'],
             );
 
             $pool = new Swoole\Async\MySQL($config, 100);
         }
-        $pool->query("INSERT INTO `card_log` (`uid`, `card`, `dateline`) VALUES ($uid,$card,$dateline)", function () {
+        $cardIndex = array_flip(array_keys($this->cardConfig));
+
+        $pool->query("INSERT INTO `card_log` (`uid`, `card`, `dateline`) VALUES ({$uid},{$cardIndex[$card]},{$dateline})", function () {
             return TRUE;
         });
     }
@@ -207,40 +230,52 @@ class card extends Swoole\Controller
     public function select()
     {
         $uid = isset($this->swoole->request->get['uid']) ? intval($this->swoole->request->get['uid']) : 0;
-
+        if($uid <= 0){
+            return 'error';
+        }
         $apt = new Swoole\SelectDB($this->db);//重库查询
         $apt->from('card_log');
         $apt->equal('uid', $uid);
         $res = $apt->getall();
-        return $this->json($res);
+
+        $result = [];
+        $cards = array_keys($this->cardConfig);
+        foreach($res as $r){
+            if(isset($result[$cards[$r['card']]])){
+                $result[$cards[$r['card']]]++;
+            } else{
+                $result[$cards[$r['card']]] = 1;
+            }
+
+        }
+
+        return $this->json($result);
     }
 
     /**
      *  查看每天发放情况
      * @return string
      */
-    public function putOutInfo()
+    public function result()
     {
-        $res = ['total' => 0];
         $c = [];
         $start = $this->hdConfig['start'];
 
-        while ($start < $this->hdConfig['end']) {
+        while($start < $this->hdConfig['end']){
             $day = date('m-d', $start);
-            foreach ($this->cardConfig as $cd => $v) {
-                //todo
-                $num = intval($this->clsMemcached->get($this->mcDateCard .$day . $cd));
+            foreach($this->cardConfig as $cd => $v){
+                $num = intval($this->clsMemcached->get($this->mcDateCard . $day . $cd));
+                var_dump($this->mcDateCard . $day . $cd);
                 $res[$day][$cd] = $num;
 
                 $t = isset($c[$cd]) ? intval($c[$cd]) : 0;
                 $c[$cd] = $t + $num;
-                //$res[$day.'key'][]= $day . 'putout_card_' . $cd;
             }
             $start += 86400;
         }
 
         $res['total'] = $c;
-        return $this->json($res, 100, '发放结果');
+        return $this->json([], 100, '发放结果');
 
     }
 
@@ -251,7 +286,7 @@ class card extends Swoole\Controller
      * @param int $deadline
      * @return bool|string
      */
-    public function restrictionRules($ip, $limit = 20, $deadline = 60)
+    protected function restrictionRules($ip, $limit = 20, $deadline = 60)
     {
         $key = sprintf("xz_%s", $ip);
         $params = [$key, $deadline];
@@ -267,7 +302,7 @@ class card extends Swoole\Controller
             count($params)
         );
 
-        if ($rs > $limit) {
+        if($rs > $limit){
             return sprintf("%s分钟只能提交%s条，歇会再来哦~", $deadline / 60, $limit);
         }
         return FALSE;
