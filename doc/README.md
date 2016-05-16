@@ -27,3 +27,19 @@
 ---
 1.uid 平均12秒2次
 2.ip 60秒30次
+
+
+项目代码
+---
+/web/swoole_lottery/
+
+
+接口地址
+---
+1.
+
+
+upstream appServer{
+    server 127.0.0.1:9501;
+    server 127.0.0.1:9502;
+}
