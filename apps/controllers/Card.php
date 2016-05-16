@@ -265,7 +265,6 @@ class card extends Swoole\Controller
             $day = date('m-d', $start);
             foreach($this->cardConfig as $cd => $v){
                 $num = intval($this->clsMemcached->get($this->mcDateCard . $day . $cd));
-                var_dump($this->mcDateCard . $day . $cd);
                 $res[$day][$cd] = $num;
 
                 $t = isset($c[$cd]) ? intval($c[$cd]) : 0;
@@ -275,7 +274,7 @@ class card extends Swoole\Controller
         }
 
         $res['total'] = $c;
-        return $this->json([], 100, '发放结果');
+        return $this->json($res, 100, '发放结果');
 
     }
 
